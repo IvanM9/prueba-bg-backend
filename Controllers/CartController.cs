@@ -18,7 +18,6 @@ public class CartController : ControllerBase
         _cartService = cartService;
     }
 
-    /// <summary>Obtener carrito del usuario autenticado.</summary>
     [HttpGet]
     [ProducesResponseType(typeof(CartDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetCart()

@@ -1,11 +1,14 @@
 using System.Text;
+using bg_backend.Common;
 using bg_backend.Data;
 using bg_backend.Middleware;
 using bg_backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -74,10 +77,7 @@ builder.Services.AddSwaggerGen(c =>
         Description = "Ingresa el token obtenido en POST /api/auth/login (sin el prefijo 'Bearer ')"
     });
 
-    c.AddSecurityRequirement(_ => new OpenApiSecurityRequirement
-    {
-        [new OpenApiSecuritySchemeReference("Bearer")] = []
-    });
+    c.OperationFilter<AuthorizeCheckOperationFilter>();
 });
 
 var app = builder.Build();
