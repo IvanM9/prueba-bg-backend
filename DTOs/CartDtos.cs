@@ -3,12 +3,12 @@ using System.ComponentModel.DataAnnotations;
 namespace bg_backend.DTOs;
 
 public record AddCartItemRequest(
-    [property: Required] int ProductId,
-    [property: Range(1, int.MaxValue)] int Quantity
+    [Required] int ProductId,
+    [Range(1, int.MaxValue)] int Quantity
 );
 
 public record UpdateCartItemRequest(
-    [property: Range(1, int.MaxValue)] int Quantity
+    [Range(1, int.MaxValue)] int Quantity
 );
 
 public record CartItemDto(
