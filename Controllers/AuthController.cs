@@ -15,7 +15,6 @@ public class AuthController : ControllerBase
         _authService = authService;
     }
 
-    /// <summary>Autenticar usuario y devolver token JWT.</summary>
     [HttpPost("login")]
     [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
