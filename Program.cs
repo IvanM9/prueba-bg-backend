@@ -43,17 +43,31 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
             ClockSkew = TimeSpan.Zero
         };
+        
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                if (string.IsNullOrEmpty(context.Token
+                    ) && context.Request.Cookies.TryGetValue("access_token", out var tokenFromCookie))
+                {
+                    context.Token = tokenFromCookie;
+                }
+                return Task.CompletedTask;
+            }
+        };
     });
 
 builder.Services.AddAuthorization();
 
-// CORS para el frontend Angular
+// CORS para el frontend Angular (AllowCredentials obligatorio para cookies HttpOnly)
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AngularClient", policy =>
         policy.WithOrigins("http://localhost:4200")
               .AllowAnyHeader()
-              .AllowAnyMethod());
+              .AllowAnyMethod()
+              .AllowCredentials());
 });
 
 // Swagger con soporte JWT (botón Authorize)
